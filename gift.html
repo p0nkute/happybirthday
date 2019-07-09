@@ -1,84 +1,86 @@
 <style>
-  HTML, BODY {
-  height: 100%;
-  }
+@import url('https://fonts.googleapis.com/css?family=Amatic+SC:400,700');
 
-$colors: #360745, #D61C59, #E7D84B, #EFEAC5, #1B8798;
+body
+  font-family 'Amatic SC', sans-serif
+  font-size 100px
 
-BODY {
-  background: hsl(200,70,11);
-  background-size: .12em 100%;
-  font: 16em/1 Arial;
-}
-
-.text--line {
-  font-size: .5em;
-  }
-
-svg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  }
-
-$max: 5;
-$stroke-step: 7%; 
-.text-copy {
-  fill: none;
-  stroke: white;
-  stroke-dasharray: $stroke-step $stroke-step * ($max - 1);
-  stroke-width: 3px;
+@keyframes squiggly-anim
+  0%
+    filter url('#squiggly-0')
   
-  animation: stroke-offset 9s infinite linear;
+  25%
+    filter url('#squiggly-1')
   
-  @for $item from 1 through $max {
-    $stroke-color: nth($colors, $item);
-    
-    &:nth-child(#{$item}) {
-      stroke: $stroke-color;
-      stroke-dashoffset: $stroke-step * $item;
-      }
-    }
-  }
+  50%
+    filter url('#squiggly-2')
+  
+  75%
+    filter url('#squiggly-3')
+  
+  100%
+    filter url('#squiggly-4')
+  
+$squiggly
+  animation squiggly-anim 0.34s linear infinite
 
-@keyframes stroke-offset {
-  50% {
-    stroke-dashoffset: $stroke-step * $max;  
-    stroke-dasharray: 0 $stroke-step * $max*2.5;
-  }
-}
+body
+  line-height 100vh
+  background #111
+  color white
+  
+.test
+  @extend $squiggly
+  display inline-block
+  vertical-align middle
+  width 100%
+  
+  outline none
+  text-align center
+  line-height 1
+
+
+.small
+  font-size 0.5em
+
+.smaller
+  font-size 0.4em
+p
+  margin 0
 </style>
-<svg viewBox="0 0 800 600">
-  <symbol id="s-text">
-    <text text-anchor="middle"
-          x="50%"
-          y="35%"
-          class="text--line"
-          >
-      Đặng
-    </text>
-    <text text-anchor="middle"
-          x="50%"
-          y="68%"
-          class="text--line2"
-          >
-      Thái
-    </text>
+<div class="test" contenteditable>
+  Squiggly Text
+  <p class="small">– with – <p/>
+  SVG Filters 
+  <p class="small">(you can even edit this text)</p>
+  <p class="smaller">(only tested on Chrome so far)</p>
+</div>
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <defs>
+
     
-  </symbol>
-  
-  <g class="g-ants">
-    <use xlink:href="#s-text"
-      class="text-copy"></use>     
-    <use xlink:href="#s-text"
-      class="text-copy"></use>     
-    <use xlink:href="#s-text"
-      class="text-copy"></use>     
-    <use xlink:href="#s-text"
-      class="text-copy"></use>     
-    <use xlink:href="#s-text"
-      class="text-copy"></use>     
-  </g>
-  
-  
+    <filter id="squiggly-0">
+      <feTurbulence id="turbulence" baseFrequency="0.02" numOctaves="3" result="noise" seed="0"/>
+      <feDisplacementMap id="displacement" in="SourceGraphic" in2="noise" scale="6" />
+    </filter>
+    <filter id="squiggly-1">
+      <feTurbulence id="turbulence" baseFrequency="0.02" numOctaves="3" result="noise" seed="1"/>
+<feDisplacementMap in="SourceGraphic" in2="noise" scale="8" />
+    </filter>
+    
+    <filter id="squiggly-2">
+      <feTurbulence id="turbulence" baseFrequency="0.02" numOctaves="3" result="noise" seed="2"/>
+<feDisplacementMap in="SourceGraphic" in2="noise" scale="6" />
+    </filter>
+    <filter id="squiggly-3">
+      <feTurbulence id="turbulence" baseFrequency="0.02" numOctaves="3" result="noise" seed="3"/>
+<feDisplacementMap in="SourceGraphic" in2="noise" scale="8" />
+    </filter>
+    
+    <filter id="squiggly-4">
+      <feTurbulence id="turbulence" baseFrequency="0.02" numOctaves="3" result="noise" seed="4"/>
+<feDisplacementMap in="SourceGraphic" in2="noise" scale="6" />
+    </filter>
+  </defs> 
 </svg>
